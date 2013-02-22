@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMgt", "MvcIntro\UserMgt.csproj", "{1E906269-DED2-46F9-ABD9-D947E786AD05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E0CD678F-AD38-4737-9E80-0B87D98EE6E3}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserControllerTest", "UnitTestProject1\UserControllerTest.csproj", "{A194A001-E344-4FAD-A162-241F54E846BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E906269-DED2-46F9-ABD9-D947E786AD05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E906269-DED2-46F9-ABD9-D947E786AD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E906269-DED2-46F9-ABD9-D947E786AD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E906269-DED2-46F9-ABD9-D947E786AD05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A194A001-E344-4FAD-A162-241F54E846BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A194A001-E344-4FAD-A162-241F54E846BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A194A001-E344-4FAD-A162-241F54E846BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A194A001-E344-4FAD-A162-241F54E846BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
