@@ -50,49 +50,33 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\EntityFramework.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\FluentAssertions.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="FluentNHibernate">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\FluentNHibernate.dll</HintPath>
+    <Reference Include="SimpleBrowser.WebDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SimpleBrowser.WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\Iesi.Collections.dll</HintPath>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebDriver, Version=2.21.0.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\Ionic.Zip.dll</HintPath>
-    </Reference>
-    <Reference Include="MvcIntro">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\MvcIntro.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="RazorHosting">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\RazorHosting.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleBrowser">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\SimpleBrowser.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleBrowser.WebDriver">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\SimpleBrowser.WebDriver.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="UnitTestProject1">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\UnitTestProject1.dll</HintPath>
-    </Reference>
-    <Reference Include="WebDriver">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\WebDriver.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvcIntro\UserMgt.csproj">
+      <Project>{1E906269-DED2-46F9-ABD9-D947E786AD05}</Project>
+      <Name>UserMgt</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
