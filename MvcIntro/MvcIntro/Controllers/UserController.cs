@@ -5,11 +5,11 @@ using MvcIntro.Models;
 
 namespace MvcIntro.Controllers
 {
-    public class AccountController : Controller
+    public class UserController : Controller
     {
 
         //
-        // GET: /Account/LogOn
+        // GET: /User/LogOn
 
         public ActionResult LogOn()
         {
@@ -17,7 +17,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Account/LogOn
+        // POST: /User/LogOn
 
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
@@ -48,7 +48,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // GET: /Account/LogOff
+        // GET: /User/LogOff
 
         public ActionResult LogOff()
         {
@@ -58,7 +58,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // GET: /Account/Register
+        // GET: /User/Register
 
         public ActionResult Register()
         {
@@ -66,7 +66,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Account/Register
+        // POST: /User/Register
 
         [HttpPost]
         public ActionResult Register(RegisterModel model)
@@ -93,7 +93,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // GET: /Account/ChangePassword
+        // GET: /User/ChangePassword
 
         [Authorize]
         public ActionResult ChangePassword()
@@ -102,7 +102,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Account/ChangePassword
+        // POST: /User/ChangePassword
 
         [Authorize]
         [HttpPost]
@@ -139,7 +139,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // GET: /Account/ChangePasswordSuccess
+        // GET: /User/ChangePasswordSuccess
 
         public ActionResult ChangePasswordSuccess()
         {
