@@ -5,6 +5,7 @@ using FluentAssertions;
 using MvcIntro.Models;
 using NUnit.Framework;
 using MvcIntro.Controllers;
+using OpenQA.Selenium;
 
 namespace UnitTestProject1
 {
@@ -63,6 +64,23 @@ namespace UnitTestProject1
 
             updatedUser.Name.Should().Be(newUser.Name);
             updatedUser.Address.Should().Be(newUser.Address);
-        }       
+        }
+
+        [Test]
+        public void ShouldSavePerson()
+        {
+            var browser = new SimpleBrowser.WebDriver.SimpleBrowserDriver();
+
+            //Add user
+            browser.Url = "http://localhost:54075/User/Create";
+            browser.FindElement(By.Id("Name")).SendKeys("Darth Vader");
+            browser.FindElement(By.Id("Address")).SendKeys("Death Star");
+            browser.FindElement(By.Id("create")).Submit();
+
+            //Search user
+            browser.Url = "http://localhost:54075/User/Search";
+            browser.FindElement(By.Id("SearchQuery")).SendKeys("darth vader");
+            browser.FindElement(By.Id("search")).Submit();
+        }
     }
 }
