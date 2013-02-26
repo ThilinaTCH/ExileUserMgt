@@ -50,49 +50,32 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="FluentNHibernate">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\FluentNHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\Ionic.Zip.dll</HintPath>
-    </Reference>
-    <Reference Include="MvcIntro">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\MvcIntro.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\NHibernate.dll</HintPath>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Visual Studio 2010\Projects\Concepts-master\dll\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="RazorHosting">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\RazorHosting.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleBrowser">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\SimpleBrowser.dll</HintPath>
-    </Reference>
     <Reference Include="SimpleBrowser.WebDriver">
       <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\SimpleBrowser.WebDriver.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="UnitTestProject1">
-      <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\UnitTestProject1.dll</HintPath>
-    </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebDriver">
       <HintPath>..\..\ExileUserMgt\MvcIntro\UnitTestProject1\bin\Debug\WebDriver.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvcIntro\UserMgt.csproj">
+      <Project>{1e906269-ded2-46f9-abd9-d947e786ad05}</Project>
+      <Name>UserMgt</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
