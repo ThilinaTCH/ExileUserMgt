@@ -81,6 +81,9 @@ namespace UnitTestProject1
             browser.Url = "http://localhost:54075/User/Search";
             browser.FindElement(By.Id("SearchQuery")).SendKeys("darth vader");
             browser.FindElement(By.Id("search")).Submit();
+
+            string retrieved = browser.FindElement(By.Id("result00")).Text;
+            retrieved.Trim().Should().Be("Darth Vader");
         }
     }
 }
