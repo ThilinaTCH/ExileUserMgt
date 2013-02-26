@@ -2,6 +2,12 @@
 
 namespace MvcIntro.Models
 {
+    public class User
+    {
+        public virtual int Id { get; set; }
+        public virtual string UserName { get; set; }
+        public virtual string Password { get; set; }
+    }
 
     public class ChangePasswordModel
     {
