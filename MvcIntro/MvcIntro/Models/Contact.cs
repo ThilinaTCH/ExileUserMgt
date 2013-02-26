@@ -7,6 +7,7 @@ namespace MvcIntro.Models
         public Contact()
         {
             Id = 0;
+            UserId = 0;
             Name = "";
             Address = "";
         }
@@ -16,6 +17,7 @@ namespace MvcIntro.Models
             Address = address;
         }
         public virtual int Id { get; set; }
+        public virtual int UserId { get; set; }
         [Required]
         public virtual string Name { get; set; }
         [Required]

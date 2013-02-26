@@ -90,6 +90,7 @@
     <Compile Include="Models\ContactRepo.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
