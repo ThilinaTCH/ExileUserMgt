@@ -43,6 +43,20 @@ namespace UnitTestProject1
         }
 
         [Test]
+        public void UpdateAllFields()
+        {
+            var oldUser = new User("Wills", "Australia");
+            repo.AddUser(oldUser);
+            var newUser = new User("Alice", "Denmark");
+            repo.UpdateUser(oldUser.Id, newUser);
+
+            User updatedUser = repo.GetUserById(oldUser.Id);
+
+            updatedUser.Name.Should().Be(newUser.Name);
+            updatedUser.Address.Should().Be(newUser.Address);
+        }
+
+        [Test]
         public void ShouldRemoveDeletedUsers()
         {
             var userToBeDeleted = new User("Michelle", "Germany");
@@ -64,27 +78,21 @@ namespace UnitTestProject1
             browser.FindElement(By.Id("Address")).SendKeys("Death Star");
             browser.FindElement(By.Id("create")).Submit();
 
-            //Search user
+            //Search user-existing
             browser.Url = "http://localhost:54075/User/Search";
             browser.FindElement(By.Id("SearchQuery")).SendKeys("darth vader");
             browser.FindElement(By.Id("search")).Submit();
 
             string retrieved = browser.FindElement(By.Id("result00")).Text;
             retrieved.Trim().Should().Be("Darth Vader");
-        }
 
-        [Test]
-        public void UpdateAllFields()
-        {
-            var oldUser = new User("Wills", "Australia");
-            repo.AddUser(oldUser);
-            var newUser = new User("Alice", "Denmark");
-            repo.UpdateUser(oldUser.Id, newUser);
+            //Search user-non existing
+            browser.Url = "http://localhost:54075/User/Search";
+            browser.FindElement(By.Id("SearchQuery")).SendKeys("anakin");
+            browser.FindElement(By.Id("search")).Submit();
 
-            User updatedUser = repo.GetUserById(oldUser.Id);
-
-            updatedUser.Name.Should().Be(newUser.Name);
-            updatedUser.Address.Should().Be(newUser.Address);
+            retrieved = browser.FindElement(By.Id("noResults")).Text;
+            retrieved.Trim().Should().Be("No Matches.....");
         }
     }
 }
