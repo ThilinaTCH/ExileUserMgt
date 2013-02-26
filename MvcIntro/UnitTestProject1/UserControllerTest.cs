@@ -3,8 +3,8 @@ using System.Linq;
 using System.Web.Mvc;
 using FluentAssertions;
 using MvcIntro.Models;
-using NUnit.Framework;
 using MvcIntro.Controllers;
+using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace UnitTestProject1
