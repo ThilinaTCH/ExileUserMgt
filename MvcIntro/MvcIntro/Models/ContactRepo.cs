@@ -2,9 +2,9 @@
 
 namespace MvcIntro.Models
 {
-    public class UserRepo
+    public class ContactRepo
     {
-        public void AddUser(User m1)
+        public void AddUser(Contact m1)
         {
             SaveUsers(m1);
         }
@@ -20,14 +20,14 @@ namespace MvcIntro.Models
                 using (var transaction = session.BeginTransaction())
                 {
                     // save both stores, this saves everything else via cascading
-                    session.Delete(session.Load<User>(id));
+                    session.Delete(session.Load<Contact>(id));
 
                     transaction.Commit();
                 }
             }
             //delete user who have Id=id
         }
-        public void UpdateUser(int id, User m1)
+        public void UpdateUser(int id, Contact m1)
         {
              var sessionFactory = NHibernateContext.SesionFactory;
 
@@ -61,9 +61,9 @@ namespace MvcIntro.Models
             }
         }
 
-        public User GetUserById(int id)
+        public Contact GetUserById(int id)
         {
-            var user = new User("testName", "testAddress");
+            var user = new Contact("testName", "testAddress");
 
             // create our NHibernate session factory
              var sessionFactory = NHibernateContext.SesionFactory;
@@ -73,7 +73,7 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    user = session.Get<User>(id);
+                    user = session.Get<Contact>(id);
                     transaction.Commit();
                 }
 
@@ -82,12 +82,12 @@ namespace MvcIntro.Models
             return user;
         }
 
-        public List<User> UserList()
+        public List<Contact> UserList()
         {
             return LoadUsers();
         }
 
-        private void SaveUsers(User m2)
+        private void SaveUsers(Contact m2)
         {
              var sessionFactory = NHibernateContext.SesionFactory;
 
@@ -103,25 +103,25 @@ namespace MvcIntro.Models
             }
         }
 
-        private List<User> LoadUsers()
+        private List<Contact> LoadUsers()
         {
-            List<User> users = new List<User>();
+            List<Contact> users = new List<Contact>();
             var sessionFactory = NHibernateContext.SesionFactory;
 
             using (var session = sessionFactory.OpenSession())
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    users = (List<User>)session.CreateCriteria(typeof(User)).List<User>();
+                    users = (List<Contact>)session.CreateCriteria(typeof(Contact)).List<Contact>();
                     transaction.Commit();
                 }
             }
             return users;
         }
 
-        public List<User> GetSearchedUsers(string p)
+        public List<Contact> GetSearchedUsers(string p)
         {
-            var result = new List<User>();
+            var result = new List<Contact>();
             var all = LoadUsers();
             foreach (var Usere in all)
             {

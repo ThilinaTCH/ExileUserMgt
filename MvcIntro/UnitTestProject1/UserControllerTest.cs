@@ -13,22 +13,22 @@ namespace UnitTestProject1
     [TestFixture]
     public class UserControllerTest
     {
-        private static readonly UserRepo repo = new UserRepo();
-        private readonly UserController controller = new UserController(repo);
+        private static readonly ContactRepo repo = new ContactRepo();
+        private readonly ContactController controller = new ContactController(repo);
 
-        private List<User> ListUsers()
+        private List<Contact> ListUsers()
         {
             var result = controller.Index() as ViewResult;
-            return (List<User>) result.Model;
+            return (List<Contact>) result.Model;
         }
 
         [Test]
         public void SaveAllFields()
         {
-            var newUser = new User("Mike", "UK");
+            var newUser = new Contact("Mike", "UK");
             repo.AddUser(newUser);
 
-            User createdUser = repo.GetUserById(newUser.Id);
+            Contact createdUser = repo.GetUserById(newUser.Id);
             createdUser.Name.Should().Be(newUser.Name);
             createdUser.Address.Should().Be(newUser.Address);
         }
@@ -36,21 +36,21 @@ namespace UnitTestProject1
         [Test]
         public void ShouldIncludeAddedUsers()
         {
-            var newUser = new User("Johnny", "USA");
+            var newUser = new Contact("Johnny", "USA");
             repo.AddUser(newUser);
 
-            ListUsers().Any(p => p.Id == newUser.Id).Should().BeTrue();
+            ListUsers().Should().Contain(p => p.Id == newUser.Id);
         }
 
         [Test]
         public void UpdateAllFields()
         {
-            var oldUser = new User("Wills", "Australia");
+            var oldUser = new Contact("Wills", "Australia");
             repo.AddUser(oldUser);
-            var newUser = new User("Alice", "Denmark");
+            var newUser = new Contact("Alice", "Denmark");
             repo.UpdateUser(oldUser.Id, newUser);
 
-            User updatedUser = repo.GetUserById(oldUser.Id);
+            Contact updatedUser = repo.GetUserById(oldUser.Id);
 
             updatedUser.Name.Should().Be(newUser.Name);
             updatedUser.Address.Should().Be(newUser.Address);
@@ -59,7 +59,7 @@ namespace UnitTestProject1
         [Test]
         public void ShouldRemoveDeletedUsers()
         {
-            var userToBeDeleted = new User("Michelle", "Germany");
+            var userToBeDeleted = new Contact("Michelle", "Germany");
             repo.AddUser(userToBeDeleted);
 
             repo.DeleteUser(userToBeDeleted.Id);

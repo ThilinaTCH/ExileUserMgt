@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcIntro.Models
 {
-    public class UserSearch
+    public class ContactSearch
     {        
         [Required]
         public string SearchQuery { get; set; }
-        public List<User> UserList = new List<User>();
+        public List<Contact> UserList = new List<Contact>();
     }
 }

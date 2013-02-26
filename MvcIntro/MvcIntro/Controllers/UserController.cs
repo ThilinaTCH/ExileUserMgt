@@ -1,142 +1,189 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Web.Mvc;
+using System.Web.Security;
 using MvcIntro.Models;
 
 namespace MvcIntro.Controllers
 {
-    public class UserController : Controller
+    public class AccountController : Controller
     {
-        private UserRepo repo=new UserRepo();
-
-        public UserController()
-        {
-        }
-
-        public UserController(UserRepo rpo)
-        {
-            repo = rpo;
-        }
-        User usr=new User();
-        //
-        // GET: /Movies/
-
-        public ActionResult Index()
-        {
-            var model = repo.UserList();
-            return View(model);
-        }
 
         //
-        // GET: /Movies/Details/5
+        // GET: /Account/LogOn
 
-        public ActionResult Details(int id)
+        public ActionResult LogOn()
         {
             return View();
         }
 
-        public ActionResult DeleteAll()
-        {
-            repo.DeleteAll();
-            return RedirectToAction("Index");
-        }
-
         //
-        // GET: /Movies/Create
-
-        public ActionResult Create()
-        {
-            return View(new User());
-        }
-
-        //
-        // POST: /Movies/Create
+        // POST: /Account/LogOn
 
         [HttpPost]
-        public ActionResult Create(User newUser)
+        public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                repo.AddUser(newUser);
-                return RedirectToAction("Index");
+                if (Membership.ValidateUser(model.UserName, model.Password))
+                {
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                }
             }
-            return View(newUser);
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
-
         //
-        // GET: /Movies/Edit/5
+        // GET: /Account/LogOff
 
-        public ActionResult Edit(int id)
+        public ActionResult LogOff()
         {
-            usr = repo.GetUserById(id);
-            return View(usr);
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Home");
         }
 
         //
-        // POST: /Movies/Edit/5
+        // GET: /Account/Register
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
 
         [HttpPost]
-        public ActionResult Edit(int id, User newUser)
+        public ActionResult Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
-                repo.UpdateUser(id,newUser);
-                return RedirectToAction("Index");
+                // Attempt to register the user
+                MembershipCreateStatus createStatus;
+                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                }
             }
-            else
-            {
-                return View(repo.GetUserById(id));
-            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
         //
-        // GET: /Movies/Delete/5
+        // GET: /Account/ChangePassword
 
-        public ActionResult Delete(int id)
+        [Authorize]
+        public ActionResult ChangePassword()
         {
-            usr = repo.GetUserById(id);
-            return View(usr);
+            return View();
         }
 
         //
-        // POST: /Movies/Delete/5
+        // POST: /Account/ChangePassword
 
+        [Authorize]
         [HttpPost]
-        public ActionResult Delete(int id, User newUser)
+        public ActionResult ChangePassword(ChangePasswordModel model)
         {
-            repo.DeleteUser(id);
-            return RedirectToAction("Index");
-        }
-
-
-        //
-        // GET: /Movies/Search
-
-        public ActionResult Search()
-        {
-            var searchList = new UserSearch();
-            return View(searchList);
-        }
-
-        //
-        // POST: /Movies/Search
-
-        [HttpPost]
-        public ActionResult Search(UserSearch newUser)
-        {
-            var searchList = new List<User>();
             if (ModelState.IsValid)
             {
-                searchList=repo.GetSearchedUsers(newUser.SearchQuery);
-                newUser.UserList = searchList;
-                return View(newUser);
+
+                // ChangePassword will throw an exception rather
+                // than return false in certain failure scenarios.
+                bool changePasswordSucceeded;
+                try
+                {
+                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                }
+                catch (Exception)
+                {
+                    changePasswordSucceeded = false;
+                }
+
+                if (changePasswordSucceeded)
+                {
+                    return RedirectToAction("ChangePasswordSuccess");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                }
             }
-            else
-            {
-                newUser.UserList = searchList;
-                return View(newUser);
-            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
+        //
+        // GET: /Account/ChangePasswordSuccess
+
+        public ActionResult ChangePasswordSuccess()
+        {
+            return View();
+        }
+
+        #region Status Codes
+        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
+        {
+            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
+            // a full list of status codes.
+            switch (createStatus)
+            {
+                case MembershipCreateStatus.DuplicateUserName:
+                    return "User name already exists. Please enter a different user name.";
+
+                case MembershipCreateStatus.DuplicateEmail:
+                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+
+                case MembershipCreateStatus.InvalidPassword:
+                    return "The password provided is invalid. Please enter a valid password value.";
+
+                case MembershipCreateStatus.InvalidEmail:
+                    return "The e-mail address provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.InvalidAnswer:
+                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.InvalidQuestion:
+                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.InvalidUserName:
+                    return "The user name provided is invalid. Please check the value and try again.";
+
+                case MembershipCreateStatus.ProviderError:
+                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+
+                case MembershipCreateStatus.UserRejected:
+                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+
+                default:
+                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+            }
+        }
+        #endregion
     }
 }

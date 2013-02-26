@@ -2,9 +2,9 @@ using FluentNHibernate.Mapping;
 
 namespace MvcIntro.Models
 {
-    public class UserMap : ClassMap<User>
+    public class ContactMap : ClassMap<Contact>
     {
-        public UserMap()
+        public ContactMap()
         {
             Id(x => x.Id);
             Map(x => x.Name);
