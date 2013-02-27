@@ -4,12 +4,12 @@ namespace MvcIntro.Models
 {
     public class ContactRepo
     {
-        public void AddUser(Contact m1)
+        public void AddContact(Contact m1)
         {
-            SaveUsers(m1);
+            SaveContacts(m1);
         }
 
-        public void DeleteUser(int id)
+        public void DeleteContact(int id)
         {
             // create our NHibernate session factory
              var sessionFactory = NHibernateContext.SesionFactory;
@@ -25,9 +25,9 @@ namespace MvcIntro.Models
                     transaction.Commit();
                 }
             }
-            //delete user who have Id=id
+            //delete Contact who have Id=id
         }
-        public void UpdateUser(int id, Contact m1)
+        public void UpdateContact(int id, Contact m1)
         {
              var sessionFactory = NHibernateContext.SesionFactory;
 
@@ -46,7 +46,7 @@ namespace MvcIntro.Models
 
         }
 
-        public void DeleteAll()
+        public void DeleteAll(int uid)
         {
              var sessionFactory = NHibernateContext.SesionFactory;
 
@@ -55,15 +55,15 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    session.CreateQuery("delete from User").ExecuteUpdate();
+                    session.CreateQuery("delete from Contact where UserId=\""+uid+"\"").ExecuteUpdate();
                     transaction.Commit();
                 }
             }
         }
 
-        public Contact GetUserById(int id)
+        public Contact GetContactById(int id)
         {
-            var user = new Contact("testName", "testAddress");
+            var Contact = new Contact("testName", "testAddress");
 
             // create our NHibernate session factory
              var sessionFactory = NHibernateContext.SesionFactory;
@@ -73,21 +73,21 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    user = session.Get<Contact>(id);
+                    Contact = session.Get<Contact>(id);
                     transaction.Commit();
                 }
 
             }
 
-            return user;
+            return Contact;
         }
 
-        public List<Contact> UserList()
+        public List<Contact> ContactList(int uid)
         {
-            return LoadUsers();
+            return LoadContacts(uid);
         }
 
-        private void SaveUsers(Contact m2)
+        private void SaveContacts(Contact m2)
         {
              var sessionFactory = NHibernateContext.SesionFactory;
 
@@ -96,37 +96,37 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    // save user
+                    // save Contact
                     session.SaveOrUpdate(m2);
                     transaction.Commit();
                 }
             }
         }
 
-        private List<Contact> LoadUsers()
+        private List<Contact> LoadContacts(int uid)
         {
-            List<Contact> users = new List<Contact>();
+            List<Contact> contacts = new List<Contact>();
             var sessionFactory = NHibernateContext.SesionFactory;
 
             using (var session = sessionFactory.OpenSession())
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    users = (List<Contact>)session.CreateCriteria(typeof(Contact)).List<Contact>();
+                    contacts = (List<Contact>) session.QueryOver<Contact>().Where(x => x.UserId == uid).List();
                     transaction.Commit();
                 }
             }
-            return users;
+            return contacts;
         }
 
-        public List<Contact> GetSearchedUsers(string p)
+        public List<Contact> GetSearchedContacts(int uid,string p)
         {
             var result = new List<Contact>();
-            var all = LoadUsers();
-            foreach (var Usere in all)
+            var all = LoadContacts(uid);
+            foreach (var Contacte in all)
             {
-                if (Usere.Name.ToLower().Contains(p.ToLower()) || Usere.Address.ToLower().Contains(p.ToLower()))
-                    result.Add(Usere);
+                if (Contacte.Name.ToLower().Contains(p.ToLower()) || Contacte.Address.ToLower().Contains(p.ToLower()))
+                    result.Add(Contacte);
             }
             return result;
         }
