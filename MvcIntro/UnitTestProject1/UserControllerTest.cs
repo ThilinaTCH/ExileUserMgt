@@ -19,7 +19,7 @@ namespace UnitTestProject1
         private List<Contact> ListUsers()
         {
             var result = controller.Index() as ViewResult;
-            return (List<Contact>) result.Model;
+            return (List<Contact>)result.Model;
         }
 
         [Test]
@@ -28,14 +28,14 @@ namespace UnitTestProject1
             var newUser = new User();
             newUser.UserName = "Surath";
             newUser.Password = "123456";
-            UserManager uMgr= new UserManager();
-            bool b=uMgr.CreateUser(newUser);
+            UserManager uMgr = new UserManager();
+            bool b = uMgr.CreateUser(newUser);
 
             b.Should().BeTrue();
-                       User retrievedUser = new User();
-                       retrievedUser=uMgr.GetUserByName(newUser.UserName);
+            User retrievedUser = new User();
+            retrievedUser = uMgr.GetUserByName(newUser.UserName);
             retrievedUser.UserName.Should().Be(newUser.UserName);
-                       retrievedUser.Password.Should().Be(newUser.Password);
+            retrievedUser.Password.Should().Be(newUser.Password);
         }
 
         [Test]
