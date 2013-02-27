@@ -95,22 +95,16 @@ namespace MvcIntro.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                bool stat=repo.CreateUser(model.UserName, model.Password);
+                bool stat=repo.CreateUser(model);
 
                 if (stat)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    FormsAuthentication.SetAuthCookie(model.UserName, false);
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "User name already exists. Please enter a different user name.");
-                }
+                ModelState.AddModelError("", "User name already exists. Please enter a different user name.");
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
     }
