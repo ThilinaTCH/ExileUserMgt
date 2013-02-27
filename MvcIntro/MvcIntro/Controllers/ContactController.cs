@@ -10,7 +10,7 @@ namespace MvcIntro.Controllers
         private ContactRepo repo = new ContactRepo();
         Contact cnt = new Contact();
 
-        private UserManager cm = new UserManager();
+        private UserRepo cm = new UserRepo();
         User usr = new User();
 
         HttpCookie aCookie;

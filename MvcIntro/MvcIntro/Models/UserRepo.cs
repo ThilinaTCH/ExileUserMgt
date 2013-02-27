@@ -5,7 +5,7 @@ using System.Web;
 
 namespace MvcIntro.Models
 {
-    public class UserManager
+    public class UserRepo
     {
         public bool CreateUser(User newUser)
         {

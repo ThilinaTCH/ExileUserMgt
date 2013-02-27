@@ -8,13 +8,13 @@ namespace MvcIntro.Controllers
 {
     public class UserController : Controller
     {
-        private UserManager repo=new UserManager();
+        private UserRepo repo = new UserRepo();
 
         public UserController()
         {
         }
 
-        public UserController(UserManager rpo)
+        public UserController(UserRepo rpo)
         {
             repo = rpo;
         }
