@@ -23,6 +23,20 @@ namespace UnitTestProject1
         }
 
         [Test]
+        public void ShouldCreateNewUser()
+        {
+            var newUser = new User();
+            newUser.UserName = "Surath";
+            newUser.Password = "123456";
+            UserManager uMgr= new UserManager();
+            uMgr.CreateUser(newUser);
+
+            User retrievedUser = uMgr.GetUserByName(newUser.UserName);
+            retrievedUser.UserName.Should().Be(newUser.UserName);
+            retrievedUser.Password.Should().Be(newUser.Password);
+        }
+
+        [Test]
         public void SaveAllFields()
         {
             var newUser = new Contact("Mike", "UK");
