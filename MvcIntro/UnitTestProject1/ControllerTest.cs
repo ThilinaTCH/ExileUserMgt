@@ -11,10 +11,13 @@ using SimpleBrowser.WebDriver;
 namespace UnitTestProject1
 {
     [TestFixture]
-    public class UserControllerTest
+    public class ControllerTest
     {
         private static readonly ContactRepo repo = new ContactRepo();
         private readonly ContactController controller = new ContactController(repo);
+
+        UserManager uMgr = new UserManager();
+
 
         private List<Contact> ListUsers()
         {
@@ -26,14 +29,10 @@ namespace UnitTestProject1
         public void ShouldCreateNewUser()
         {
             var newUser = new User();
-            newUser.UserName = "Surath";
+            newUser.UserName = "John";
             newUser.Password = "123456";
-            UserManager uMgr= new UserManager();
-            uMgr.CreateUser(newUser);
-
-            User retrievedUser = uMgr.GetUserByName(newUser.UserName);
-            retrievedUser.UserName.Should().Be(newUser.UserName);
-            retrievedUser.Password.Should().Be(newUser.Password);
+            bool ok=uMgr.CreateUser(newUser);
+            ok.Should().BeTrue(); //if user cration is successfull it returns true
         }
 
         [Test]
@@ -48,7 +47,7 @@ namespace UnitTestProject1
         }
 
         [Test]
-        public void ShouldIncludeAddedUsers()
+        public void ShouldIncludeAddedContacts()
         {
             var newUser = new Contact("Johnny", "USA");
             repo.AddContact(newUser);
@@ -71,7 +70,7 @@ namespace UnitTestProject1
         }
 
         [Test]
-        public void ShouldRemoveDeletedUsers()
+        public void ShouldRemoveDeletedContacts()
         {
             var userToBeDeleted = new Contact("Michelle", "Germany");
             repo.AddContact(userToBeDeleted);
@@ -82,7 +81,7 @@ namespace UnitTestProject1
         }
 
         [Test]
-        public void ShouldSavePerson()
+        public void ShouldSaveContact()
         {
             var browser = new SimpleBrowserDriver();
 
