@@ -100,6 +100,12 @@ namespace MvcIntro.Controllers
                 if (stat)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
+
+                    HttpCookie myCookie = new HttpCookie("loginCookie");
+                    // Set the cookie value.
+                    myCookie.Value = model.UserName;
+                    Response.Cookies.Add(myCookie);
+
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "User name already exists. Please enter a different user name.");

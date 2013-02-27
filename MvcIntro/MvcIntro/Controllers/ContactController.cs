@@ -116,6 +116,9 @@ namespace MvcIntro.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    UserName = Server.HtmlEncode(aCookie.Value);
+                    usr = cm.GetUserByName(UserName);
+                    newUser.UserId = usr.UId;
                     repo.UpdateContact(id, newUser);
                     return RedirectToAction("Index");
                 }
