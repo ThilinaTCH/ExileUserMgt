@@ -41,10 +41,16 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    retrievedUser = (List<User>) session.QueryOver<User>().Where(x => x.UserName == userName).List();
-                    transaction.Commit();
+                    try
+                    {
+                        retrievedUser = (List<User>) session.QueryOver<User>().Where(x => x.UserName == userName).List();
+                    }
+                    catch (Exception e)
+                    {
+                        retrievedUser = null;
+                    }
+                        transaction.Commit();
                 }
-
             }
             if (retrievedUser.Count > 0)
             {

@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using FluentAssertions;
 using MvcIntro.Controllers;
 using MvcIntro.Models;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 using SimpleBrowser.WebDriver;
 
 namespace UnitTestProject1
@@ -15,7 +18,7 @@ namespace UnitTestProject1
     {
         private static readonly ContactRepo repo = new ContactRepo();
         private readonly ContactController controller = new ContactController(repo);
-        private static readonly UserManager userMgr= new UserManager();
+        private static readonly UserManager userMgr = new UserManager();
 
         private List<Contact> ListUsers()
         {
@@ -27,9 +30,9 @@ namespace UnitTestProject1
         public void ShouldCreateNewUser()
         {
             var newUser = new User();
-            newUser.UserName = "John";
+            newUser.UserName = "Johnson";
             newUser.Password = "123456";
-            bool ok=uMgr.CreateUser(newUser);
+            bool ok = userMgr.CreateUser(newUser);
             ok.Should().BeTrue(); //if user cration is successfull it returns true
 
         }
@@ -48,15 +51,21 @@ namespace UnitTestProject1
         [Test]
         public void ShouldIncludeAddedContacts()
         {
-            var newUser = new Contact("Johnny", "USA");
-            repo.AddContact(newUser);
+            //manually login the user before testing this
+            logIn();
 
-            ListUsers().Should().Contain(p => p.Id == newUser.Id);
+            var newContact = new Contact("Johnny", "USA");
+            repo.AddContact(newContact);
+
+            ListUsers().Should().Contain(p => p.Id == newContact.Id);
         }
 
         [Test]
         public void UpdateAllFields()
         {
+            //manually login the user before testing this
+            logIn();
+
             var oldUser = new Contact("Wills", "Australia");
             repo.AddContact(oldUser);
             var newUser = new Contact("Alice", "Denmark");
@@ -71,6 +80,9 @@ namespace UnitTestProject1
         [Test]
         public void ShouldRemoveDeletedContacts()
         {
+            //manually login the user before testing this
+            logIn();
+
             var userToBeDeleted = new Contact("Michelle", "Germany");
             repo.AddContact(userToBeDeleted);
 
@@ -82,16 +94,15 @@ namespace UnitTestProject1
         [Test]
         public void ShouldSaveContact()
         {
-            var browser = new SimpleBrowserDriver();
-
+            SimpleBrowserDriver browser = logIn();
             //Add user
-            browser.Url = "http://localhost:54075/User/Create";
+            browser.Url = "http://localhost:54075/Contact/Create";
             browser.FindElement(By.Id("Name")).SendKeys("Darth Vader");
             browser.FindElement(By.Id("Address")).SendKeys("Death Star");
             browser.FindElement(By.Id("create")).Submit();
 
             //Search user-existing
-            browser.Url = "http://localhost:54075/User/Search";
+            browser.Url = "http://localhost:54075/Contact/Search";
             browser.FindElement(By.Id("SearchQuery")).SendKeys("darth vader");
             browser.FindElement(By.Id("search")).Submit();
 
@@ -99,12 +110,35 @@ namespace UnitTestProject1
             retrieved.Trim().Should().Be("Darth Vader");
 
             //Search user-non existing
-            browser.Url = "http://localhost:54075/User/Search";
+            browser.Url = "http://localhost:54075/Contact/Search";
             browser.FindElement(By.Id("SearchQuery")).SendKeys("anakin");
             browser.FindElement(By.Id("search")).Submit();
 
             retrieved = browser.FindElement(By.Id("noResults")).Text;
             retrieved.Trim().Should().Be("No Matches.....");
+        }
+
+        private SimpleBrowserDriver logIn()
+        {
+            var browser = new SimpleBrowserDriver();
+            //Create user
+            if (userMgr.GetUserByName("Tom") == null)
+            {
+                browser.Url = "http://localhost:54075/User/Register";
+                browser.FindElement(By.Id("UserName")).SendKeys("Tom");
+                browser.FindElement(By.Id("Password")).SendKeys("abcdef");
+                browser.FindElement(By.Id("ConfirmPassword")).SendKeys("abcdef");
+                browser.FindElement(By.Id("register")).Submit();
+            }
+            else
+            {
+                browser.Url = "http://localhost:54075/User/LogOn";
+                browser.FindElement(By.Id("UserName")).SendKeys("Tom");
+                browser.FindElement(By.Id("Password")).SendKeys("abcdef");
+                browser.FindElement(By.Id("RememberMe")).Click();
+                browser.FindElement(By.Id("logon")).Submit();
+            }
+            return browser;
         }
     }
 }
