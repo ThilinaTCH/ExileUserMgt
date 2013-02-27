@@ -29,11 +29,13 @@ namespace UnitTestProject1
             newUser.UserName = "Surath";
             newUser.Password = "123456";
             UserManager uMgr= new UserManager();
-            uMgr.CreateUser(newUser);
+            bool b=uMgr.CreateUser(newUser);
 
-            User retrievedUser = uMgr.GetUserByName(newUser.UserName);
+            b.Should().BeTrue();
+                       User retrievedUser = new User();
+                       retrievedUser=uMgr.GetUserByName(newUser.UserName);
             retrievedUser.UserName.Should().Be(newUser.UserName);
-            retrievedUser.Password.Should().Be(newUser.Password);
+                       retrievedUser.Password.Should().Be(newUser.Password);
         }
 
         [Test]
