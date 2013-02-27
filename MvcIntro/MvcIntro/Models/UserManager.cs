@@ -10,7 +10,7 @@ namespace MvcIntro.Models
         public bool CreateUser(User newUser)
         {
             User storingUser = GetUserByName(newUser.UserName);
-            bool isExist = true;
+            bool isExist = false;
             if (storingUser != null)
             {
                 var sessionFactory = NHibernateContext.SesionFactory;
@@ -23,7 +23,7 @@ namespace MvcIntro.Models
                         // save user
                         session.SaveOrUpdate(newUser);
                         transaction.Commit();
-                        isExist = false;
+                        isExist = true;
                     }
                 }
             }
@@ -33,7 +33,7 @@ namespace MvcIntro.Models
         //GetUserByName return user
         public User GetUserByName(String userName)
         {
-            User retrievedUser = null; // new User();
+            List<User> retrievedUser; // new User();
             var sessionFactory = NHibernateContext.SesionFactory;
 
             using (var session = sessionFactory.OpenSession())
@@ -41,12 +41,16 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    retrievedUser = session.Get<User>(userName);
+                    retrievedUser = (List<User>) session.QueryOver<User>().Where(x => x.UserName == userName).List();
                     transaction.Commit();
                 }
 
             }
-            return retrievedUser;
+            if (retrievedUser.Count > 0)
+            {
+                return retrievedUser[0];
+            }
+            return null;
         }
 
         //ValidateUser method validation return bool

@@ -13,7 +13,7 @@ namespace MvcIntro.Controllers
         private UserManager cm = new UserManager();
         User usr = new User();
 
-        HttpCookie aCookie = Request.Cookies["loginCookie"];
+        HttpCookie aCookie;
         string UserName;
 
         public ContactController()
@@ -29,6 +29,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult Index()
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
@@ -42,6 +43,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult DeleteAll()
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
@@ -57,6 +59,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult Create()
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 return View(new Contact());
@@ -70,6 +73,7 @@ namespace MvcIntro.Controllers
         [HttpPost]
         public ActionResult Create(Contact newUser)
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
 
@@ -92,6 +96,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult Edit(int id)
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 cnt = repo.GetContactById(id);
@@ -106,6 +111,7 @@ namespace MvcIntro.Controllers
         [HttpPost]
         public ActionResult Edit(int id, Contact newUser)
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 if (ModelState.IsValid)
@@ -126,6 +132,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult Delete(int id)
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 cnt = repo.GetContactById(id);
@@ -140,6 +147,7 @@ namespace MvcIntro.Controllers
         [HttpPost]
         public ActionResult Delete(int id, Contact newUser)
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 repo.DeleteContact(id);
@@ -154,6 +162,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult Search()
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 var searchList = new ContactSearch();
@@ -169,6 +178,7 @@ namespace MvcIntro.Controllers
         [HttpPost]
         public ActionResult Search(ContactSearch newUser)
         {
+            aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
                 var searchList = new List<Contact>();

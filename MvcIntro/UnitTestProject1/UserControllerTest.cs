@@ -40,9 +40,9 @@ namespace UnitTestProject1
         public void SaveAllFields()
         {
             var newUser = new Contact("Mike", "UK");
-            repo.AddUser(newUser);
+            repo.AddContact(newUser);
 
-            Contact createdUser = repo.GetUserById(newUser.Id);
+            Contact createdUser = repo.GetContactById(newUser.Id);
             createdUser.Name.Should().Be(newUser.Name);
             createdUser.Address.Should().Be(newUser.Address);
         }
@@ -51,7 +51,7 @@ namespace UnitTestProject1
         public void ShouldIncludeAddedUsers()
         {
             var newUser = new Contact("Johnny", "USA");
-            repo.AddUser(newUser);
+            repo.AddContact(newUser);
 
             ListUsers().Should().Contain(p => p.Id == newUser.Id);
         }
@@ -60,11 +60,11 @@ namespace UnitTestProject1
         public void UpdateAllFields()
         {
             var oldUser = new Contact("Wills", "Australia");
-            repo.AddUser(oldUser);
+            repo.AddContact(oldUser);
             var newUser = new Contact("Alice", "Denmark");
-            repo.UpdateUser(oldUser.Id, newUser);
+            repo.UpdateContact(oldUser.Id, newUser);
 
-            Contact updatedUser = repo.GetUserById(oldUser.Id);
+            Contact updatedUser = repo.GetContactById(oldUser.Id);
 
             updatedUser.Name.Should().Be(newUser.Name);
             updatedUser.Address.Should().Be(newUser.Address);
@@ -74,9 +74,9 @@ namespace UnitTestProject1
         public void ShouldRemoveDeletedUsers()
         {
             var userToBeDeleted = new Contact("Michelle", "Germany");
-            repo.AddUser(userToBeDeleted);
+            repo.AddContact(userToBeDeleted);
 
-            repo.DeleteUser(userToBeDeleted.Id);
+            repo.DeleteContact(userToBeDeleted.Id);
 
             ListUsers().Any(p => p.Id == userToBeDeleted.Id).Should().BeFalse();
         }
