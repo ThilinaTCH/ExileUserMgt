@@ -7,14 +7,33 @@ namespace MvcIntro.Models
 {
     public class UserManager
     {
-        public void AddUser(User m1)
+        public bool CreateUser(User newUser)
         {
-            SaveUsers(m1);
+            User storingUser = GetUserByName(newUser.UserName);
+            bool isExist = true;
+            if (storingUser != null)
+            {
+                var sessionFactory = NHibernateContext.SesionFactory;
+
+                using (var session = sessionFactory.OpenSession())
+                {
+                    // populate the database
+                    using (var transaction = session.BeginTransaction())
+                    {
+                        // save user
+                        session.SaveOrUpdate(newUser);
+                        transaction.Commit();
+                        isExist = false;
+                    }
+                }
+            }
+            return isExist;
         }
 
-        public void DeleteUser(int id)
+        //GetUserByName return user
+        public User GetUserByName(String userName)
         {
-            // create our NHibernate session factory
+            User retrievedUser = null; // new User();
             var sessionFactory = NHibernateContext.SesionFactory;
 
             using (var session = sessionFactory.OpenSession())
@@ -22,116 +41,22 @@ namespace MvcIntro.Models
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
-                    // save both stores, this saves everything else via cascading
-                    session.Delete(session.Load<User>(id));
-
-                    transaction.Commit();
-                }
-            }
-            //delete user who have Id=id
-        }
-        public void UpdateUser(int id, User m1)
-        {
-            var sessionFactory = NHibernateContext.SesionFactory;
-
-            using (var session = sessionFactory.OpenSession())
-            {
-                // populate the database
-                using (var transaction = session.BeginTransaction())
-                {
-                    m1.Id = id;
-                    session.Update(m1);
-
-                    transaction.Commit();
-                }
-            }
-            //replace existing record with this in DB table
-
-        }
-
-        public void DeleteAll()
-        {
-            var sessionFactory = NHibernateContext.SesionFactory;
-
-            using (var session = sessionFactory.OpenSession())
-            {
-                // populate the database
-                using (var transaction = session.BeginTransaction())
-                {
-                    session.CreateQuery("delete from User").ExecuteUpdate();
-                    transaction.Commit();
-                }
-            }
-        }
-
-        public User GetUserById(int id)
-        {
-            var user = new User("testName", "testAddress");
-
-            // create our NHibernate session factory
-            var sessionFactory = NHibernateContext.SesionFactory;
-
-            using (var session = sessionFactory.OpenSession())
-            {
-                // populate the database
-                using (var transaction = session.BeginTransaction())
-                {
-                    user = session.Get<User>(id);
+                    retrievedUser = session.Get<User>(userName);
                     transaction.Commit();
                 }
 
             }
-
-            return user;
+            return retrievedUser;
         }
 
-        public List<User> UserList()
+        //ValidateUser method validation return bool
+        public bool ValidateUser(String userName, String passWord)
         {
-            return LoadUsers();
-        }
-
-        private void SaveUsers(User m2)
-        {
-            var sessionFactory = NHibernateContext.SesionFactory;
-
-            using (var session = sessionFactory.OpenSession())
-            {
-                // populate the database
-                using (var transaction = session.BeginTransaction())
-                {
-                    // save user
-                    session.SaveOrUpdate(m2);
-                    transaction.Commit();
-                }
-            }
-        }
-
-        private List<User> LoadUsers()
-        {
-            List<User> users = new List<User>();
-            var sessionFactory = NHibernateContext.SesionFactory;
-
-            using (var session = sessionFactory.OpenSession())
-            {
-                using (var transaction = session.BeginTransaction())
-                {
-                    users = (List<User>)session.CreateCriteria(typeof(User)).List<User>();
-                    transaction.Commit();
-                }
-            }
-            return users;
-        }
-
-        public List<User> GetSearchedUsers(string p)
-        {
-            var result = new List<User>();
-            var all = LoadUsers();
-            foreach (var Usere in all)
-            {
-                if (Usere.Name.ToLower().Contains(p.ToLower()) || Usere.Address.ToLower().Contains(p.ToLower()))
-                    result.Add(Usere);
-            }
-            return result;
+            User storedUser = null; // new User();
+            storedUser = GetUserByName(userName);
+            if (storedUser != null && storedUser.Password == passWord)
+                return true;
+            else return false;
         }
     }
 }
