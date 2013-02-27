@@ -15,14 +15,12 @@ namespace UnitTestProject1
     {
         private static readonly ContactRepo repo = new ContactRepo();
         private readonly ContactController controller = new ContactController(repo);
-
-        UserManager uMgr = new UserManager();
-
+        private static readonly UserManager userMgr= new UserManager();
 
         private List<Contact> ListUsers()
         {
             var result = controller.Index() as ViewResult;
-            return (List<Contact>) result.Model;
+            return (List<Contact>)result.Model;
         }
 
         [Test]
@@ -33,6 +31,7 @@ namespace UnitTestProject1
             newUser.Password = "123456";
             bool ok=uMgr.CreateUser(newUser);
             ok.Should().BeTrue(); //if user cration is successfull it returns true
+
         }
 
         [Test]
