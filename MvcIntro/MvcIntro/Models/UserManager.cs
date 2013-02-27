@@ -11,7 +11,7 @@ namespace MvcIntro.Models
         {
             User storingUser = GetUserByName(newUser.UserName);
             bool isExist = false;
-            if (storingUser != null)
+            if (storingUser == null)
             {
                 var sessionFactory = NHibernateContext.SesionFactory;
 
