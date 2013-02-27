@@ -45,7 +45,7 @@ namespace MvcIntro.Models
                     {
                         retrievedUser = (List<User>) session.QueryOver<User>().Where(x => x.UserName == userName).List();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         retrievedUser = null;
                     }

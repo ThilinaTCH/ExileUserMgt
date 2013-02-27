@@ -18,7 +18,7 @@ namespace UnitTestProject1
     {
         private static readonly ContactRepo repo = new ContactRepo();
         private readonly ContactController controller = new ContactController(repo);
-        private static readonly UserManager userMgr = new UserManager();
+        private static readonly UserRepo userMgr = new UserRepo();
 
         private List<Contact> ListUsers()
         {

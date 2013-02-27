@@ -8,10 +8,10 @@ namespace MvcIntro.Controllers
     public class ContactController : Controller
     {
         private ContactRepo repo = new ContactRepo();
-        Contact cnt = new Contact();
+        Contact conatact = new Contact();
 
-        private UserRepo cm = new UserRepo();
-        User usr = new User();
+        private UserRepo userRepo = new UserRepo();
+        User user = new User();
 
         HttpCookie aCookie;
         string UserName;
@@ -33,8 +33,8 @@ namespace MvcIntro.Controllers
             if (aCookie != null)
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
-                usr = cm.GetUserByName(UserName);
-                var model = repo.ContactList(usr.UId);
+                user = userRepo.GetUserByName(UserName);
+                var model = repo.ContactList(user.UId);
                 return View(model);
             }
             return RedirectToAction("Index", "Home");
@@ -47,8 +47,8 @@ namespace MvcIntro.Controllers
             if (aCookie != null)
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
-                usr = cm.GetUserByName(UserName);
-                repo.DeleteAll(usr.UId);
+                user = userRepo.GetUserByName(UserName);
+                repo.DeleteAll(user.UId);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index", "Home");
@@ -80,8 +80,8 @@ namespace MvcIntro.Controllers
                 if (ModelState.IsValid)
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
-                    usr = cm.GetUserByName(UserName);
-                    newUser.UserId = usr.UId;
+                    user = userRepo.GetUserByName(UserName);
+                    newUser.UserId = user.UId;
                     repo.AddContact(newUser);
                     return RedirectToAction("Index");
                 }
@@ -99,8 +99,8 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                cnt = repo.GetContactById(id);
-                return View(cnt);
+                conatact = repo.GetContactById(id);
+                return View(conatact);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -117,8 +117,8 @@ namespace MvcIntro.Controllers
                 if (ModelState.IsValid)
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
-                    usr = cm.GetUserByName(UserName);
-                    newUser.UserId = usr.UId;
+                    user = userRepo.GetUserByName(UserName);
+                    newUser.UserId = user.UId;
                     repo.UpdateContact(id, newUser);
                     return RedirectToAction("Index");
                 }
@@ -138,8 +138,8 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                cnt = repo.GetContactById(id);
-                return View(cnt);
+                conatact = repo.GetContactById(id);
+                return View(conatact);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -188,8 +188,8 @@ namespace MvcIntro.Controllers
                 if (ModelState.IsValid)
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
-                    usr = cm.GetUserByName(UserName);
-                    searchList = repo.GetSearchedContacts(usr.UId,newUser.SearchQuery);
+                    user = userRepo.GetUserByName(UserName);
+                    searchList = repo.GetSearchedContacts(user.UId,newUser.SearchQuery);
                     newUser.UserList = searchList;
                     return View(newUser);
                 }
