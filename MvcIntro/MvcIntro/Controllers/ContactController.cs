@@ -164,7 +164,9 @@ namespace MvcIntro.Controllers
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
                 user = userRepo.GetUserByName(UserName);
-                user.ContactsList.Remove(newContact);
+                var contactList = user.ContactsList;
+                contactList.Remove(contactList.SingleOrDefault(x => x.Id == newContact.Id)); 
+
                 userRepo.UpdateUser(user);
                 return RedirectToAction("Index");
             }

@@ -109,3 +109,7 @@ UpgradeLog*.XML
 /MvcIntro/MvcIntro/UserMgt.csproj
 
 /MvcIntro/UnitTestProject1/*.csproj
+
+/MvcIntro/MvcIntro/Models/ContactRepo.cs
+/MvcIntro/MvcIntro/App_Data/aspnet-MvcIntro-20130218094435.mdf
+/MvcIntro/MvcIntro/App_Data/aspnet-MvcIntro-20130218094435_log.ldf
