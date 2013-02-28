@@ -25,7 +25,7 @@ namespace MvcIntro.Controllers
             repo = rpo;
         }
         //
-        // GET: /Movies/
+        // GET: /Contact/
 
         public ActionResult Index()
         {
@@ -40,6 +40,8 @@ namespace MvcIntro.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //
+        // GET: /Contact/DeleteAll
 
         public ActionResult DeleteAll()
         {
@@ -55,7 +57,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // GET: /Movies/Create
+        // GET: /Contact/Create
 
         public ActionResult Create()
         {
@@ -68,7 +70,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Movies/Create
+        // POST: /Contact/Create
 
         [HttpPost]
         public ActionResult Create(Contact newUser)
@@ -92,7 +94,7 @@ namespace MvcIntro.Controllers
 
 
         //
-        // GET: /Movies/Edit/5
+        // GET: /Contact/Edit/5
 
         public ActionResult Edit(int id)
         {
@@ -106,7 +108,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Movies/Edit/5
+        // POST: /Contact/Edit/5
 
         [HttpPost]
         public ActionResult Edit(int id, Contact newUser)
@@ -131,7 +133,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // GET: /Movies/Delete/5
+        // GET: /Contact/Delete/5
 
         public ActionResult Delete(int id)
         {
@@ -145,7 +147,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Movies/Delete/5
+        // POST: /Contact/Delete/5
 
         [HttpPost]
         public ActionResult Delete(int id, Contact newUser)
@@ -161,7 +163,7 @@ namespace MvcIntro.Controllers
 
 
         //
-        // GET: /Movies/Search
+        // GET: /Contact/Search
 
         public ActionResult Search()
         {
@@ -176,7 +178,7 @@ namespace MvcIntro.Controllers
         }
 
         //
-        // POST: /Movies/Search
+        // POST: /Contact/Search
 
         [HttpPost]
         public ActionResult Search(ContactSearch newUser)
