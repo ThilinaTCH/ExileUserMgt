@@ -63,7 +63,7 @@ namespace MvcIntro.Models
 
         public Contact GetContactById(int id)
         {
-            var Contact = new Contact("testName", "testAddress");
+            var Contact = new Contact("testName", "testAddress",0);
 
             // create our NHibernate session factory
              var sessionFactory = NHibernateContext.SesionFactory;

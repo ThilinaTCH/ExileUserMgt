@@ -11,8 +11,9 @@ namespace MvcIntro.Models
             Name = "";
             Address = "";
         }
-        public Contact(string name, string address)
+        public Contact(string name, string address,int uid)
         {
+            UserId = uid;
             Name = name;
             Address = address;
         }

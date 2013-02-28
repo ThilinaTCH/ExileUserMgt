@@ -26,6 +26,12 @@ namespace MvcIntro.Models
 
     public class User
     {
+        public User()
+        {
+            UId = 0;
+            UserName = "";
+            Password = "";
+        }
         public virtual int UId { get; set; }
 
         [Required]
