@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;

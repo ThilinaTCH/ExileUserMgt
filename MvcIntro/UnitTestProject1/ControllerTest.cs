@@ -19,7 +19,7 @@ namespace UnitTestProject1
         private static readonly ContactRepo repo = new ContactRepo();
         private static readonly UserRepo userMgr = new UserRepo();
 
-        private List<Contact> ListUsers()
+        private IList<Contact> ListUsers()
         {
             //to get the contact list of relevent user he needs to login
             createUsr("Jill");
@@ -33,13 +33,15 @@ namespace UnitTestProject1
             var newUser = new User();
             newUser.UserName = "Johnso";
             newUser.Password = "123456";
-            bool ok = userMgr.CreateUser(newUser);
+            bool ok;
             if (userMgr.GetUserByName("Johnso") == null)
             {
+                ok = userMgr.CreateUser(newUser);
                 ok.Should().BeTrue(); //if user cration is successfull it returns true
             }
             else
             {
+                ok = userMgr.CreateUser(newUser);
                 ok.Should().BeFalse();
             }
 
@@ -56,8 +58,8 @@ namespace UnitTestProject1
         public void SaveAllFields()
         {
             createUsr("Jill");
-            var user=userMgr.GetUserByName("Jill");
-            var newContact = new Contact("Mike", "UK",user.UId);
+            var user = userMgr.GetUserByName("Jill");
+            var newContact = new Contact("Mike", "UK");
             repo.AddContact(newContact);
 
             Contact createdUser = repo.GetContactById(newContact.Id);
@@ -70,10 +72,10 @@ namespace UnitTestProject1
         {
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
-            var newContact = new Contact("Johnny", "USA",user.UId);
-            repo.AddContact(newContact);
-
-            ListUsers().Should().Contain(p => p.Id == newContact.Id);
+            var newContact = new Contact("Johnny", "USA");
+            user.ContactsList.Add(newContact);
+            userMgr.UpdateUser(user);
+            ListUsers().Any(p => p.Id == newContact.Id).Should().BeTrue();
         }
 
         [Test]
@@ -81,9 +83,9 @@ namespace UnitTestProject1
         {
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
-            var oldContact = new Contact("Wills", "Australia",user.UId);
+            var oldContact = new Contact("Wills", "Australia");
             repo.AddContact(oldContact);
-            var newContact = new Contact("Alice", "Denmark",user.UId);
+            var newContact = new Contact("Alice", "Denmark");
             repo.UpdateContact(oldContact.Id, newContact);
 
             Contact updatedUser = repo.GetContactById(oldContact.Id);
@@ -97,7 +99,7 @@ namespace UnitTestProject1
         {
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
-            var contactToBeDeleted = new Contact("Michelle", "Germany",user.UId);
+            var contactToBeDeleted = new Contact("Michelle", "Germany");
             repo.AddContact(contactToBeDeleted);
 
             repo.DeleteContact(contactToBeDeleted.Id);

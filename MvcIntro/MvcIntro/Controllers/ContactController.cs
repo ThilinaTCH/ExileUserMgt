@@ -84,7 +84,7 @@ namespace MvcIntro.Controllers
                     UserName = Server.HtmlEncode(aCookie.Value);
                     user = userRepo.GetUserByName(UserName);
                     
-                    newContact.UserId = user.UId;
+                    newContact.User.UId = user.UId;
                     newContact.User = user;
                     repo.AddContact(newContact);
                     return RedirectToAction("Index");
@@ -122,7 +122,7 @@ namespace MvcIntro.Controllers
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
                     user = userRepo.GetUserByName(UserName);
-                    newContact.UserId = user.UId;
+                    newContact.User.UId = user.UId;
                     newContact.User = user;
                     repo.UpdateContact(id, newContact);
                     return RedirectToAction("Index");
