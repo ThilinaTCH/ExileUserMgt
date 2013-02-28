@@ -24,7 +24,7 @@ namespace UnitTestProject1
             //to get the contact list of relevent user he needs to login
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
-            return repo.ContactList(user.UId);
+            return (List<Contact>) repo.ContactList(user.UId);
         }
 
         [Test]
