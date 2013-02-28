@@ -7,9 +7,10 @@ namespace MvcIntro.Models
         public ContactMap()
         {
             Id(x => x.Id);
-            Map(x=>  x.UserId);
+           // Map(x=>  x.UserId);
             Map(x => x.Name);
             Map(x => x.Address);
+            References<User>(x => x.User);
         }
     }
 }

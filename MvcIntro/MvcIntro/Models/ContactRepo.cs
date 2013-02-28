@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace MvcIntro.Models
 {
@@ -82,7 +83,7 @@ namespace MvcIntro.Models
             return Contact;
         }
 
-        public List<Contact> ContactList(int uid)
+        public IList<Contact> ContactList(int uid)
         {
             return LoadContacts(uid);
         }
@@ -103,16 +104,16 @@ namespace MvcIntro.Models
             }
         }
 
-        private List<Contact> LoadContacts(int uid)
+        private IList<Contact> LoadContacts(int uid)
         {
-            List<Contact> contacts = new List<Contact>();
+            IList<Contact> contacts = new List<Contact>();
             var sessionFactory = NHibernateContext.SesionFactory;
 
             using (var session = sessionFactory.OpenSession())
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    contacts = (List<Contact>) session.QueryOver<Contact>().Where(x => x.UserId == uid).List();
+                    contacts = (IList<Contact>)(session.Get<User>(uid).ContactsList);
                     transaction.Commit();
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcIntro.Models
 {
@@ -26,6 +27,11 @@ namespace MvcIntro.Models
 
     public class User
     {
+        public User()
+        {
+            ContactsList= new List<Contact>();
+        }
+
         public virtual int UId { get; set; }
 
         [Required]
@@ -42,5 +48,7 @@ namespace MvcIntro.Models
         [Display(Name = "Confirm password")]
         [System.Web.Mvc.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public virtual string ConfirmPassword { get; set; }
+
+        public virtual IList<Contact> ContactsList { get;  set; }
     }
 }

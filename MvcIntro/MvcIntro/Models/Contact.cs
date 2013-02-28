@@ -22,5 +22,7 @@ namespace MvcIntro.Models
         public virtual string Name { get; set; }
         [Required]
         public virtual string Address { get; set; }
-        }
+
+        public virtual User User { get; set; }
+    }
     }
