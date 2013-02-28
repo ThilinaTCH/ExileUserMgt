@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcIntro.Models;
@@ -7,11 +8,9 @@ namespace MvcIntro.Controllers
 {
     public class ContactController : Controller
     {
-        private ContactRepo repo = new ContactRepo();
-        Contact conatact = new Contact();
-
         private UserRepo userRepo = new UserRepo();
         User user = new User();
+        Contact conatact = new Contact();
 
         HttpCookie aCookie;
         string UserName;
@@ -20,9 +19,9 @@ namespace MvcIntro.Controllers
         {
         }
 
-        public ContactController(ContactRepo rpo)
+        public ContactController(UserRepo rpo)
         {
-            repo = rpo;
+            userRepo = rpo;
         }
         //
         // GET: /Contact/
@@ -34,7 +33,7 @@ namespace MvcIntro.Controllers
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
                 user = userRepo.GetUserByName(UserName);
-                var model = repo.ContactList(user.UId);
+                var model = user.ContactsList;
                 return View(model);
             }
             return RedirectToAction("Index", "Home");
@@ -50,7 +49,8 @@ namespace MvcIntro.Controllers
             {
                 UserName = Server.HtmlEncode(aCookie.Value);
                 user = userRepo.GetUserByName(UserName);
-                repo.DeleteAll(user.UId);
+                user.ContactsList=new List<Contact>();
+                userRepo.UpdateUser(user);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index", "Home");
@@ -84,9 +84,8 @@ namespace MvcIntro.Controllers
                     UserName = Server.HtmlEncode(aCookie.Value);
                     user = userRepo.GetUserByName(UserName);
                     
-                    newContact.User.UId = user.UId;
-                    newContact.User = user;
-                    repo.AddContact(newContact);
+                    user.ContactsList.Add(newContact);
+                    userRepo.UpdateUser(user);
                     return RedirectToAction("Index");
                 }
                 return View(newContact);
@@ -103,7 +102,9 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                conatact = repo.GetContactById(id);
+                UserName = Server.HtmlEncode(aCookie.Value);
+                user = userRepo.GetUserByName(UserName);
+                conatact = userRepo.GetUserContactById(user,id);
                 return View(conatact);
             }
             return RedirectToAction("Index", "Home");
@@ -118,18 +119,19 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
+                UserName = Server.HtmlEncode(aCookie.Value);
+                user = userRepo.GetUserByName(UserName);
                 if (ModelState.IsValid)
                 {
-                    UserName = Server.HtmlEncode(aCookie.Value);
-                    user = userRepo.GetUserByName(UserName);
-                    newContact.User.UId = user.UId;
-                    newContact.User = user;
-                    repo.UpdateContact(id, newContact);
+                    var contactList = user.ContactsList;
+                    contactList.Remove(contactList.SingleOrDefault(x => x.Id == newContact.Id));
+                    user.ContactsList.Add(newContact);
+                    userRepo.UpdateUser(user);
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    return View(repo.GetContactById(id));
+                    return View(userRepo.GetUserContactById(user,id));
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -143,7 +145,9 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                conatact = repo.GetContactById(id);
+                UserName = Server.HtmlEncode(aCookie.Value);
+                user = userRepo.GetUserByName(UserName);
+                conatact = userRepo.GetUserContactById(user,id);
                 return View(conatact);
             }
             return RedirectToAction("Index", "Home");
@@ -153,12 +157,15 @@ namespace MvcIntro.Controllers
         // POST: /Contact/Delete/5
 
         [HttpPost]
-        public ActionResult Delete(int id, Contact newUser)
+        public ActionResult Delete(int id, Contact newContact)
         {
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                repo.DeleteContact(id);
+                UserName = Server.HtmlEncode(aCookie.Value);
+                user = userRepo.GetUserByName(UserName);
+                user.ContactsList.Remove(newContact);
+                userRepo.UpdateUser(user);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index", "Home");
@@ -184,7 +191,7 @@ namespace MvcIntro.Controllers
         // POST: /Contact/Search
 
         [HttpPost]
-        public ActionResult Search(ContactSearch newUser)
+        public ActionResult Search(ContactSearch newContact)
         {
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
@@ -194,14 +201,14 @@ namespace MvcIntro.Controllers
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
                     user = userRepo.GetUserByName(UserName);
-                    searchList = repo.GetSearchedContacts(user.UId,newUser.SearchQuery);
-                    newUser.UserList = searchList;
-                    return View(newUser);
+                    searchList = userRepo.GetSearchedUserContacts(user,newContact.SearchQuery);
+                    newContact.UserList = searchList;
+                    return View(newContact);
                 }
                 else
                 {
-                    newUser.UserList = searchList;
-                    return View(newUser);
+                    newContact.UserList = searchList;
+                    return View(newContact);
                 }
             }
             return RedirectToAction("Index", "Home");
