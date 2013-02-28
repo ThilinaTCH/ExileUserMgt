@@ -59,6 +59,24 @@ namespace MvcIntro.Models
             return null;
         }
 
+        public void UpdateUser(User m1)
+        {
+            var sessionFactory = NHibernateContext.SesionFactory;
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                // populate the database
+                using (var transaction = session.BeginTransaction())
+                {
+                    session.Update(m1);
+
+                    transaction.Commit();
+                }
+            }
+            //replace existing record with this in DB table
+
+        }
+
         //ValidateUser method validation return bool
         public bool ValidateUser(String userName, String passWord)
         {
