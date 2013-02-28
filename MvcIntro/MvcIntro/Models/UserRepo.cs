@@ -20,7 +20,7 @@ namespace MvcIntro.Models
                     // populate the database
                     using (var transaction = session.BeginTransaction())
                     {
-                        // save user
+                        // save user                       
                         session.SaveOrUpdate(newUser);
                         transaction.Commit();
                         isExist = true;

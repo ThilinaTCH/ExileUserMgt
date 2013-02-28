@@ -73,7 +73,7 @@ namespace MvcIntro.Controllers
         // POST: /Contact/Create
 
         [HttpPost]
-        public ActionResult Create(Contact newUser)
+        public ActionResult Create(Contact newContact)
         {
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
@@ -83,11 +83,13 @@ namespace MvcIntro.Controllers
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
                     user = userRepo.GetUserByName(UserName);
-                    newUser.UserId = user.UId;
-                    repo.AddContact(newUser);
+                    
+                    newContact.UserId = user.UId;
+                    newContact.User = user;
+                    repo.AddContact(newContact);
                     return RedirectToAction("Index");
                 }
-                return View(newUser);
+                return View(newContact);
             }
             return RedirectToAction("Index", "Home");
         }
@@ -111,7 +113,7 @@ namespace MvcIntro.Controllers
         // POST: /Contact/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, Contact newUser)
+        public ActionResult Edit(int id, Contact newContact)
         {
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
@@ -120,8 +122,9 @@ namespace MvcIntro.Controllers
                 {
                     UserName = Server.HtmlEncode(aCookie.Value);
                     user = userRepo.GetUserByName(UserName);
-                    newUser.UserId = user.UId;
-                    repo.UpdateContact(id, newUser);
+                    newContact.UserId = user.UId;
+                    newContact.User = user;
+                    repo.UpdateContact(id, newContact);
                     return RedirectToAction("Index");
                 }
                 else

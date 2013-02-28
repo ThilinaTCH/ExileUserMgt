@@ -9,6 +9,7 @@ namespace MvcIntro.Models
             Id(x => x.UId);
             Map(x => x.UserName);
             Map(x => x.Password);
+            HasMany<Contact>(x => x.ContactsList).Inverse().Not.LazyLoad();
         }
     }
 }
