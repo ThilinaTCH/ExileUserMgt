@@ -11,7 +11,7 @@ namespace MvcIntro.Models
         {
             User storingUser = GetUserByName(newUser.UserName);
             bool isExist = false;
-            if (storingUser == null)
+            if (storingUser==null)
             {
                 var sessionFactory = NHibernateContext.SesionFactory;
 
@@ -33,7 +33,7 @@ namespace MvcIntro.Models
         //GetUserByName return user
         public User GetUserByName(String userName)
         {
-            List<User> retrievedUser; // new User();
+            List<User> retrievedUser=new List<User>();
             var sessionFactory = NHibernateContext.SesionFactory;
 
             using (var session = sessionFactory.OpenSession())
@@ -47,14 +47,14 @@ namespace MvcIntro.Models
                     }
                     catch (Exception)
                     {
-                        retrievedUser = null;
                     }
-                        transaction.Commit();
+                    transaction.Commit();
                 }
             }
             if (retrievedUser.Count > 0)
             {
-                return retrievedUser[0];
+                User selected = retrievedUser.First();
+                return selected;
             }
             return null;
         }

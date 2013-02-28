@@ -17,44 +17,60 @@ namespace UnitTestProject1
     public class ControllerTest
     {
         private static readonly ContactRepo repo = new ContactRepo();
-        private readonly ContactController controller = new ContactController(repo);
         private static readonly UserRepo userMgr = new UserRepo();
 
         private List<Contact> ListUsers()
         {
-            var result = controller.Index() as ViewResult;
-            return (List<Contact>)result.Model;
+            //to get the contact list of relevent user he needs to login
+            createUsr("Jill");
+            var user = userMgr.GetUserByName("Jill");
+            return repo.ContactList(user.UId);
         }
 
         [Test]
         public void ShouldCreateNewUser()
         {
             var newUser = new User();
-            newUser.UserName = "Johnson";
+            newUser.UserName = "Johnso";
             newUser.Password = "123456";
             bool ok = userMgr.CreateUser(newUser);
-            ok.Should().BeTrue(); //if user cration is successfull it returns true
+            if (userMgr.GetUserByName("Johnso") == null)
+            {
+                ok.Should().BeTrue(); //if user cration is successfull it returns true
+            }
+            else
+            {
+                ok.Should().BeFalse();
+            }
 
         }
 
+        private void createUsr(string username)
+        {
+            var newUser = new User();
+            newUser.UserName = username;
+            newUser.Password = "123456";
+            userMgr.CreateUser(newUser);
+        }
         [Test]
         public void SaveAllFields()
         {
-            var newUser = new Contact("Mike", "UK");
-            repo.AddContact(newUser);
+            createUsr("Jill");
+            var user=userMgr.GetUserByName("Jill");
+            var newContact = new Contact("Mike", "UK",user.UId);
+            repo.AddContact(newContact);
 
-            Contact createdUser = repo.GetContactById(newUser.Id);
-            createdUser.Name.Should().Be(newUser.Name);
-            createdUser.Address.Should().Be(newUser.Address);
+            Contact createdUser = repo.GetContactById(newContact.Id);
+            createdUser.Name.Should().Be(newContact.Name);
+            createdUser.Address.Should().Be(newContact.Address);
         }
 
         [Test]
         public void ShouldIncludeAddedContacts()
         {
-            //manually login the user before testing this
-            logIn();
-
-            var newContact = new Contact("Johnny", "USA");
+            createUsr("Jill");
+            var user = userMgr.GetUserByName("Jill");
+            var newContact = new Contact("Johnny", "USA",user.UId);
             repo.AddContact(newContact);
 
             ListUsers().Should().Contain(p => p.Id == newContact.Id);
@@ -63,38 +79,53 @@ namespace UnitTestProject1
         [Test]
         public void UpdateAllFields()
         {
-            //manually login the user before testing this
-            logIn();
+            createUsr("Jill");
+            var user = userMgr.GetUserByName("Jill");
+            var oldContact = new Contact("Wills", "Australia",user.UId);
+            repo.AddContact(oldContact);
+            var newContact = new Contact("Alice", "Denmark",user.UId);
+            repo.UpdateContact(oldContact.Id, newContact);
 
-            var oldUser = new Contact("Wills", "Australia");
-            repo.AddContact(oldUser);
-            var newUser = new Contact("Alice", "Denmark");
-            repo.UpdateContact(oldUser.Id, newUser);
+            Contact updatedUser = repo.GetContactById(oldContact.Id);
 
-            Contact updatedUser = repo.GetContactById(oldUser.Id);
-
-            updatedUser.Name.Should().Be(newUser.Name);
-            updatedUser.Address.Should().Be(newUser.Address);
+            updatedUser.Name.Should().Be(newContact.Name);
+            updatedUser.Address.Should().Be(newContact.Address);
         }
 
         [Test]
         public void ShouldRemoveDeletedContacts()
         {
-            //manually login the user before testing this
-            logIn();
+            createUsr("Jill");
+            var user = userMgr.GetUserByName("Jill");
+            var contactToBeDeleted = new Contact("Michelle", "Germany",user.UId);
+            repo.AddContact(contactToBeDeleted);
 
-            var userToBeDeleted = new Contact("Michelle", "Germany");
-            repo.AddContact(userToBeDeleted);
+            repo.DeleteContact(contactToBeDeleted.Id);
 
-            repo.DeleteContact(userToBeDeleted.Id);
-
-            ListUsers().Any(p => p.Id == userToBeDeleted.Id).Should().BeFalse();
+            ListUsers().Any(p => p.Id == contactToBeDeleted.Id).Should().BeFalse();
         }
 
         [Test]
         public void ShouldSaveContact()
         {
-            SimpleBrowserDriver browser = logIn();
+            var browser = new SimpleBrowserDriver();
+            //Create user
+            if (userMgr.GetUserByName("Wills") == null)
+            {
+                browser.Url = "http://localhost:54075/User/Register";
+                browser.FindElement(By.Id("UserName")).SendKeys("Wills");
+                browser.FindElement(By.Id("Password")).SendKeys("abcdef");
+                browser.FindElement(By.Id("ConfirmPassword")).SendKeys("abcdef");
+                browser.FindElement(By.Id("register")).Submit();
+            }
+            else
+            {
+                browser.Url = "http://localhost:54075/User/LogOn";
+                browser.FindElement(By.Id("UserName")).SendKeys("Wills");
+                browser.FindElement(By.Id("Password")).SendKeys("abcdef");
+                browser.FindElement(By.Id("RememberMe")).Click();
+                browser.FindElement(By.Id("logon")).Submit();
+            }
             //Add user
             browser.Url = "http://localhost:54075/Contact/Create";
             browser.FindElement(By.Id("Name")).SendKeys("Darth Vader");
@@ -116,29 +147,6 @@ namespace UnitTestProject1
 
             retrieved = browser.FindElement(By.Id("noResults")).Text;
             retrieved.Trim().Should().Be("No Matches.....");
-        }
-
-        private SimpleBrowserDriver logIn()
-        {
-            var browser = new SimpleBrowserDriver();
-            //Create user
-            if (userMgr.GetUserByName("Tom") == null)
-            {
-                browser.Url = "http://localhost:54075/User/Register";
-                browser.FindElement(By.Id("UserName")).SendKeys("Tom");
-                browser.FindElement(By.Id("Password")).SendKeys("abcdef");
-                browser.FindElement(By.Id("ConfirmPassword")).SendKeys("abcdef");
-                browser.FindElement(By.Id("register")).Submit();
-            }
-            else
-            {
-                browser.Url = "http://localhost:54075/User/LogOn";
-                browser.FindElement(By.Id("UserName")).SendKeys("Tom");
-                browser.FindElement(By.Id("Password")).SendKeys("abcdef");
-                browser.FindElement(By.Id("RememberMe")).Click();
-                browser.FindElement(By.Id("logon")).Submit();
-            }
-            return browser;
         }
     }
 }
