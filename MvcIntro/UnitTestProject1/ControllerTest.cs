@@ -16,7 +16,6 @@ namespace UnitTestProject1
     [TestFixture]
     public class ControllerTest
     {
-        private static readonly ContactRepo repo = new ContactRepo();
         private static readonly UserRepo userMgr = new UserRepo();
 
         private IList<Contact> ListUsers()
@@ -24,7 +23,7 @@ namespace UnitTestProject1
             //to get the contact list of relevent user he needs to login
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
-            return (List<Contact>) repo.ContactList(user.UId);
+            return user.ContactsList;
         }
 
         [Test]
@@ -60,9 +59,10 @@ namespace UnitTestProject1
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
             var newContact = new Contact("Mike", "UK");
-            repo.AddContact(newContact);
+            user.ContactsList.Add(newContact);
+            userMgr.UpdateUser(user);
 
-            Contact createdUser = repo.GetContactById(newContact.Id);
+            Contact createdUser = userMgr.GetUserContactById(user,newContact.Id);
             createdUser.Name.Should().Be(newContact.Name);
             createdUser.Address.Should().Be(newContact.Address);
         }
@@ -84,14 +84,20 @@ namespace UnitTestProject1
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
             var oldContact = new Contact("Wills", "Australia");
-            repo.AddContact(oldContact);
+            user.ContactsList.Add(oldContact);
+
             var newContact = new Contact("Alice", "Denmark");
-            repo.UpdateContact(oldContact.Id, newContact);
 
-            Contact updatedUser = repo.GetContactById(oldContact.Id);
+            var contactList = user.ContactsList;
+            contactList.Remove(contactList.SingleOrDefault(x => x.Id == oldContact.Id));
+            user.ContactsList.Add(newContact);
+            userMgr.UpdateUser(user);
 
-            updatedUser.Name.Should().Be(newContact.Name);
-            updatedUser.Address.Should().Be(newContact.Address);
+            var newUser = userMgr.GetUserByName("Jill");
+            Contact updatedContact = userMgr.GetUserContactById(newUser,newContact.Id);
+
+            updatedContact.Name.Should().Be(newContact.Name);
+            updatedContact.Address.Should().Be(newContact.Address);
         }
 
         [Test]
@@ -100,9 +106,10 @@ namespace UnitTestProject1
             createUsr("Jill");
             var user = userMgr.GetUserByName("Jill");
             var contactToBeDeleted = new Contact("Michelle", "Germany");
-            repo.AddContact(contactToBeDeleted);
+            user.ContactsList.Add(contactToBeDeleted);
 
-            repo.DeleteContact(contactToBeDeleted.Id);
+            user.ContactsList.Remove(contactToBeDeleted);
+            userMgr.UpdateUser(user);
 
             ListUsers().Any(p => p.Id == contactToBeDeleted.Id).Should().BeFalse();
         }

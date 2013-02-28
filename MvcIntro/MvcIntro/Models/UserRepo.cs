@@ -86,5 +86,38 @@ namespace MvcIntro.Models
                 return true;
             else return false;
         }
+
+        public Contact GetUserContactById(User use,int id)
+        {
+            IList<Contact> Contact = new List<Contact>();
+
+            // create our NHibernate session factory
+            var sessionFactory = NHibernateContext.SesionFactory;
+
+            using (var session = sessionFactory.OpenSession())
+            {
+                // populate the database
+                using (var transaction = session.BeginTransaction())
+                {
+                    Contact = session.Get<User>(use.UId).ContactsList;
+                    transaction.Commit();
+                }
+
+            }
+
+            return Contact.First(x=>x.Id==id);
+        }
+
+        public List<Contact> GetSearchedUserContacts(User User, string searchQuery)
+        {
+            var result = new List<Contact>();
+            var all = User.ContactsList;
+            foreach (var Contacte in all)
+            {
+                if (Contacte.Name.ToLower().Contains(searchQuery.ToLower()) || Contacte.Address.ToLower().Contains(searchQuery.ToLower()))
+                    result.Add(Contacte);
+            }
+            return result;
+        }
     }
 }
