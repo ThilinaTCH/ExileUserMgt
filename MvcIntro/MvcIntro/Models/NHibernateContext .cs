@@ -38,7 +38,7 @@ namespace MvcIntro.Models
                           .UseReflectionOptimizer())
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssemblyOf<NHibernateContext>())
-                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
+                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))                
                 .BuildSessionFactory();
 
         }
