@@ -1,14 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
 using FluentAssertions;
-using MvcIntro.Controllers;
 using MvcIntro.Models;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 using SimpleBrowser.WebDriver;
 
 namespace UnitTestProject1
