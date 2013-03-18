@@ -13,7 +13,7 @@ namespace UnitTestProject1
     {
         private static readonly UserRepo userMgr = new UserRepo();
 
-        private IList<Contact> ListUsers()
+        private IEnumerable<Contact> ListUsers()
         {
             //to get the contact list of relevent user he needs to login
             createUsr("Jill");
