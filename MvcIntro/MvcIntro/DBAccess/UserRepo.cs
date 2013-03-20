@@ -17,7 +17,7 @@ namespace MvcIntro.Models
                 var session = NHibernateContext.SesionFactory;
                 using (var transaction = session.BeginTransaction())
                 {
-                    session.SaveOrUpdate(newUser);
+                    session.Merge(newUser);
                     transaction.Commit();
                     isExist = true;
                 }
@@ -35,11 +35,11 @@ namespace MvcIntro.Models
                 try
                 {
                     retrievedUser = (List<User>)session.QueryOver<User>().Where(x => x.UserName == userName).List();
+                    transaction.Commit();
                 }
                 catch (Exception)
                 {
                 }
-                transaction.Commit();
             }
             if (retrievedUser.Count > 0)
             {
