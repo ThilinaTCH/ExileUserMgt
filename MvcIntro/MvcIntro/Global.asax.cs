@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -16,6 +17,12 @@ namespace MvcIntro
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            filters.Add(new HandleErrorAttribute
+            {
+                ExceptionType = typeof(DbException),
+                // DbError.cshtml is a view in the Shared folder.
+                View = "DbError",
+            });
             filters.Add(new HandleErrorAttribute());
         }
 

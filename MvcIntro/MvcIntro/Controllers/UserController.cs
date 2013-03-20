@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -18,7 +19,7 @@ namespace MvcIntro.Controllers
         {
             repo = rpo;
         }
-        User usr=new User();
+        User usr = new User();
         //
         // GET: /User/LogOn
 
@@ -35,28 +36,35 @@ namespace MvcIntro.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (repo.ValidateUser(model.UserName, model.Password))
+                try
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-
-                    HttpCookie myCookie = new HttpCookie("loginCookie");
-                    // Set the cookie value.
-                    myCookie.Value = model.UserName;
-                    Response.Cookies.Add(myCookie);
-
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    if (repo.ValidateUser(model.UserName, model.Password))
                     {
-                        return Redirect(returnUrl);
+                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+                        HttpCookie myCookie = new HttpCookie("loginCookie");
+                        // Set the cookie value.
+                        myCookie.Value = model.UserName;
+                        Response.Cookies.Add(myCookie);
+
+                        if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        ModelState.AddModelError("", "The user name or password provided is incorrect.");
                     }
                 }
-                else
+                catch (DbException)
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    throw;
                 }
             }
 
@@ -75,7 +83,7 @@ namespace MvcIntro.Controllers
             currentUserCookie.Value = null;
             HttpContext.Response.SetCookie(currentUserCookie);
 
-            FormsAuthentication.SignOut();            
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -95,7 +103,7 @@ namespace MvcIntro.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool stat=repo.CreateUser(model);
+                bool stat = repo.CreateUser(model);
 
                 if (stat)
                 {
