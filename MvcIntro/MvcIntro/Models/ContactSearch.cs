@@ -8,7 +8,7 @@ namespace MvcIntro.Models
     public class ContactSearch
     {        
         [Required]
-        [DisplayName("Search text")]
+        [Display(Name = "Enter word")]
         public string SearchQuery { get; set; }
         public List<Contact> UserList = new List<Contact>();
     }

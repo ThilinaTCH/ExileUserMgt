@@ -67,7 +67,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -93,14 +92,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Mappers\ContactMap.cs" />
-    <Compile Include="DBAccess\NHibernateContext .cs" />
+    <Compile Include="Models\ContactMap.cs" />
+    <Compile Include="Models\NHibernateContext .cs" />
     <Compile Include="Models\ContactSearch.cs" />
-    <Compile Include="DBAccess\ContactRepo.cs" />
     <Compile Include="Models\Contact.cs" />
-    <Compile Include="DBAccess\UserRepo.cs" />
+    <Compile Include="Models\UserRepo.cs" />
     <Compile Include="Models\UserModel.cs" />
-    <Compile Include="Mappers\UserMap.cs" />
+    <Compile Include="Models\UserMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +187,7 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Contact\Index.cshtml" />
@@ -199,7 +198,6 @@
     <Content Include="Views\User\LogOn.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
-    <Content Include="Views\Shared\DbError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
