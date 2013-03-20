@@ -9,17 +9,17 @@ namespace MvcIntro.Models
 {
     class NHibernateContext
     {
-        private static ISessionFactory _sessionInstance;
+        private static ISession _sessionInstance;
 
 
-        public static ISessionFactory SesionFactory
+        public static ISession Session
         {
             get
             {
 
                 if (_sessionInstance == null)
                 {
-                    _sessionInstance = CreateSessionFactory();
+                    _sessionInstance = CreateSessionFactory().OpenSession();
                 }
                 return _sessionInstance;
             }

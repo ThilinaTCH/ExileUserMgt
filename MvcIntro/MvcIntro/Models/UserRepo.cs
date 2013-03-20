@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NHibernate.Criterion;
 
 namespace MvcIntro.Models
 {
@@ -13,10 +14,8 @@ namespace MvcIntro.Models
             bool isExist = false;
             if (storingUser==null)
             {
-                var sessionFactory = NHibernateContext.SesionFactory;
+                var session = NHibernateContext.Session;
 
-                using (var session = sessionFactory.OpenSession())
-                {
                     // populate the database
                     using (var transaction = session.BeginTransaction())
                     {
@@ -25,7 +24,7 @@ namespace MvcIntro.Models
                         transaction.Commit();
                         isExist = true;
                     }
-                }
+                
             }
             return isExist;
         }
@@ -34,10 +33,9 @@ namespace MvcIntro.Models
         public User GetUserByName(String userName)
         {
             List<User> retrievedUser=new List<User>();
-            var sessionFactory = NHibernateContext.SesionFactory;
+            var session = NHibernateContext.Session;
 
-            using (var session = sessionFactory.OpenSession())
-            {
+            
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
@@ -50,7 +48,7 @@ namespace MvcIntro.Models
                     }
                     transaction.Commit();
                 }
-            }
+            
             if (retrievedUser.Count > 0)
             {
                 User selected = retrievedUser.First();
@@ -61,10 +59,8 @@ namespace MvcIntro.Models
 
         public void UpdateUser(User m1)
         {
-            var sessionFactory = NHibernateContext.SesionFactory;
+            var session = NHibernateContext.Session;
 
-            using (var session = sessionFactory.OpenSession())
-            {
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
@@ -72,7 +68,7 @@ namespace MvcIntro.Models
 
                     transaction.Commit();
                 }
-            }
+            
             //replace existing record with this in DB table
 
         }
@@ -80,7 +76,7 @@ namespace MvcIntro.Models
         //ValidateUser method validation return bool
         public bool ValidateUser(String userName, String passWord)
         {
-            User storedUser = null; // new User();
+            User storedUser = null; // new user();
             storedUser = GetUserByName(userName);
             if (storedUser != null && storedUser.Password == passWord)
                 return true;
@@ -92,10 +88,8 @@ namespace MvcIntro.Models
             IList<Contact> Contact = new List<Contact>();
 
             // create our NHibernate session factory
-            var sessionFactory = NHibernateContext.SesionFactory;
+            var session = NHibernateContext.Session;
 
-            using (var session = sessionFactory.OpenSession())
-            {
                 // populate the database
                 using (var transaction = session.BeginTransaction())
                 {
@@ -103,20 +97,21 @@ namespace MvcIntro.Models
                     transaction.Commit();
                 }
 
-            }
+            
 
             return Contact.First(x=>x.Id==id);
         }
 
-        public List<Contact> GetSearchedUserContacts(User User, string searchQuery)
+        public List<Contact> GetSearchedUserContacts(User user, string searchQuery)
         {
             var result = new List<Contact>();
-            var all = User.ContactsList;
-            foreach (var Contacte in all)
-            {
-                if (Contacte.Name.ToLower().Contains(searchQuery.ToLower()) || Contacte.Address.ToLower().Contains(searchQuery.ToLower()))
-                    result.Add(Contacte);
-            }
+            var session = NHibernateContext.Session;
+            
+                using (var transaction = session.BeginTransaction())
+                {
+                    result = (List<Contact>)session.QueryOver<Contact>().Where(x => (x.Name.IsLike(@"%" + searchQuery + "%") || x.Address.IsLike(@"%" + searchQuery + "%"))&&x.User.UId==user.UId).List();
+                    transaction.Commit();
+                }
             return result;
         }
     }
