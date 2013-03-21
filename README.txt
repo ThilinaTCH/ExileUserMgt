@@ -29,4 +29,28 @@ Edit and delete contact
 3 Before deletion, user is prompted to confirm the deletion
 4 User can delete all the contacts using “Delete All” link on Contact List page 
 
+##################### Deployment #####################
+
+Installing required tools
+1 MSSQL Server Management Studio 2012
+2 Visual Studio 2012
+3 .Net 4.0 framework
+
+Create Databases
+1 Create a database "ExileContactMgt"
+	(Required tables will be created automatically)
+	
+#################### Updating and testing ########################
+
+1 Complete pre requisites stated in deployment section
+2 Install NuGet package manager in Visual Studio 2012
+3 Use NuGet for installing required packages
+  NHibernate - As an ORM
+  FluentNhibernate - for runtime creation of database tables
+  FluentAssertions - for unit testing
+  NUnit - for unit testing 
+  SimpleBrowser - for web testing
+4 Use project "ContactManagementTests" for testing
+
+
  
