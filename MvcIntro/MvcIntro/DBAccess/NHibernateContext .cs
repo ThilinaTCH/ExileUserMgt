@@ -29,7 +29,7 @@ namespace MvcIntro.Models
         {
             return Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2008
-                .ConnectionString(x => x.Is("Server=localhost;User ID=sa;password=eXile123;Database= NHibaernateDemo;Integrated Security=SSPI;"))
+                .ConnectionString(x => x.Is("Server=localhost;User ID=sa;password=eXile123;Database= ExileContactMgt;Integrated Security=SSPI;"))
                           .UseReflectionOptimizer())
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssemblyOf<NHibernateContext>())
