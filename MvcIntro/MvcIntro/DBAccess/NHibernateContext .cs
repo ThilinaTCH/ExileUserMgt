@@ -16,12 +16,20 @@ namespace MvcIntro.Models
         {
             get
             {
-
                 if (_sessionInstance == null)
                 {
                     _sessionInstance = CreateSessionFactory().OpenSession();
                 }
                 return _sessionInstance;
+            }
+        }
+
+        public static void closeSession()
+        {
+            if (_sessionInstance != null)
+            {
+                _sessionInstance.Close();
+                _sessionInstance = null;
             }
         }
 
@@ -33,7 +41,7 @@ namespace MvcIntro.Models
                           .UseReflectionOptimizer())
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssemblyOf<NHibernateContext>())
-                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))                
+                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
                 .BuildSessionFactory();
 
         }

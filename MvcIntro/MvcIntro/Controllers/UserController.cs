@@ -19,7 +19,6 @@ namespace MvcIntro.Controllers
         {
             repo = rpo;
         }
-        User usr = new User();
         //
         // GET: /User/LogOn
 
@@ -77,6 +76,7 @@ namespace MvcIntro.Controllers
 
         public ActionResult LogOff()
         {
+            NHibernateContext.closeSession();
             HttpCookie currentUserCookie = HttpContext.Request.Cookies["loginCookie"];
             HttpContext.Response.Cookies.Remove("loginCookie");
             currentUserCookie.Expires = DateTime.Now.AddDays(-10);

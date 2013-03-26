@@ -1,5 +1,4 @@
 ﻿@model MvcIntro.Models.ContactSearch
-
 @{
     ViewBag.Title = "Search";
 }
@@ -28,30 +27,30 @@
     </fieldset>
 }
 
+@if (Model.UserList.Count > 0)
+{
+    <p>Search reslts for : @Html.DisplayFor(model => model.SearchQuery)</p>
+}
 <table>
-@if(Model.UserList.Count>0){
-    <tr>
-        <th>Search reslts for : @Html.DisplayFor(model => model.SearchQuery)</th>
-    </tr> 
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Address
-        </th>
-        <th></th>
-    </tr>
+    @if (Model.UserList.Count > 0)
+    {
+        <tr>
+            <th>Name
+            </th>
+            <th>Address
+            </th>
+            <th></th>
+        </tr>
     }
     @if (Model.UserList.Count == 0)
     {
         <tr>
-            <th id="noResults">
-                No Matches..... 
+            <th id="noResults">No Matches..... 
             </th>
         </tr> 
     }
-    @foreach (var item in Model.UserList) {
+    @foreach (var item in Model.UserList)
+    {
         <tr>
             <td id="result00">
                 @Html.DisplayFor(modelItem => item.Name)
@@ -60,8 +59,8 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
     }

@@ -102,9 +102,7 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                UserName = Server.HtmlEncode(aCookie.Value);
-                user = userRepo.GetUserByName(UserName);
-                conatact = userRepo.GetUserContactById(user,id);
+                conatact = userRepo.GetUserContactById(id);
                 return View(conatact);
             }
             return RedirectToAction("Index", "Home");
@@ -119,19 +117,18 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                UserName = Server.HtmlEncode(aCookie.Value);
-                user = userRepo.GetUserByName(UserName);
                 if (ModelState.IsValid)
                 {
-                    var contactList = user.ContactsList;
-                    contactList.Remove(contactList.SingleOrDefault(x => x.Id == newContact.Id));
-                    user.ContactsList.Add(newContact);
-                    userRepo.UpdateUser(user);
+                    UserName = Server.HtmlEncode(aCookie.Value);
+                    user = userRepo.GetUserByName(UserName);
+                    newContact.User = user;
+                    var cr = new ContactRepo();
+                    cr.UpdateContact(id,newContact);
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    return View(userRepo.GetUserContactById(user,id));
+                    return View(userRepo.GetUserContactById(id));
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -145,9 +142,7 @@ namespace MvcIntro.Controllers
             aCookie = Request.Cookies["loginCookie"];
             if (aCookie != null)
             {
-                UserName = Server.HtmlEncode(aCookie.Value);
-                user = userRepo.GetUserByName(UserName);
-                conatact = userRepo.GetUserContactById(user,id);
+                conatact = userRepo.GetUserContactById(id);
                 return View(conatact);
             }
             return RedirectToAction("Index", "Home");

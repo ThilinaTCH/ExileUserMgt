@@ -57,7 +57,7 @@ namespace UnitTestProject1
             user.ContactsList.Add(newContact);
             userMgr.UpdateUser(user);
 
-            Contact createdUser = userMgr.GetUserContactById(user,newContact.Id);
+            Contact createdUser = userMgr.GetUserContactById(newContact.Id);
             createdUser.Name.Should().Be(newContact.Name);
             createdUser.Address.Should().Be(newContact.Address);
         }
@@ -89,7 +89,7 @@ namespace UnitTestProject1
             userMgr.UpdateUser(user);
 
             var newUser = userMgr.GetUserByName("Jill");
-            Contact updatedContact = userMgr.GetUserContactById(newUser,newContact.Id);
+            Contact updatedContact = userMgr.GetUserContactById(newContact.Id);
 
             updatedContact.Name.Should().Be(newContact.Name);
             updatedContact.Address.Should().Be(newContact.Address);

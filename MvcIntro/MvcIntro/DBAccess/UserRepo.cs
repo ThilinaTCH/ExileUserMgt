@@ -17,7 +17,7 @@ namespace MvcIntro.Models
                 var session = NHibernateContext.SesionFactory;
                 using (var transaction = session.BeginTransaction())
                 {
-                    session.Merge(newUser);
+                    session.SaveOrUpdate(newUser);
                     transaction.Commit();
                     isExist = true;
                 }
@@ -54,8 +54,7 @@ namespace MvcIntro.Models
             var session = NHibernateContext.SesionFactory;
             using (var transaction = session.BeginTransaction())
             {
-                session.Merge(m1);
-
+                session.SaveOrUpdate(m1);
                 transaction.Commit();
             }
         }
@@ -69,17 +68,16 @@ namespace MvcIntro.Models
             else return false;
         }
 
-        public Contact GetUserContactById(User use, int id)
+        public Contact GetUserContactById(int id)
         {
-            IList<Contact> Contact = new List<Contact>();
-
+            Contact contact;
             var session = NHibernateContext.SesionFactory;
             using (var transaction = session.BeginTransaction())
             {
-                Contact = session.Get<User>(use.UId).ContactsList;
+                contact = session.QueryOver<Contact>().Where(x => x.Id == id).SingleOrDefault();
                 transaction.Commit();
             }
-            return Contact.First(x => x.Id == id);
+            return contact;
         }
 
         public List<Contact> GetSearchedUserContacts(User user, string searchQuery)
@@ -88,8 +86,7 @@ namespace MvcIntro.Models
             var session = NHibernateContext.SesionFactory;
             using (var transaction = session.BeginTransaction())
             {
-                result = (List<Contact>)session.QueryOver<Contact>().Where(x => x.Name.IsLike(@"%"+searchQuery+"%")).List();
-                //result.AddRange(session.QueryOver<Contact>().Where(x => x.User.UId == user.UId && x.Address.Contains(searchQuery)).List());
+                result = (List<Contact>)session.QueryOver<Contact>().Where(x => x.Name.IsLike(@"%" + searchQuery + "%") || x.Address.IsLike(@"%" + searchQuery + "%")).And(x=>x.User.UId==user.UId).List();
                 transaction.Commit();
             }
             return result;
