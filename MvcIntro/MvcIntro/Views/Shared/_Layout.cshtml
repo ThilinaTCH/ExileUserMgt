@@ -10,12 +10,14 @@
     <div class="page">
         <div id="header">
             <div id="title">
-                <h1>ExileContactMgt</h1>
+                <h1>ExileContactMgt</h1>                
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
             </div>
             <div id="menucontainer">
+                <h2>You Store.. You Access..</h2>
+                
                 <ul id="menu">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Add Contacts", "Create", "Contact")</li>
@@ -28,7 +30,11 @@
             @RenderBody()
         </div>
         <div id="footer">
+           
         </div>
+         
     </div>
+    <div><img src="/Content/images/286x115.png" style="position:fixed; right: 0;bottom: 0;"/></div>
+    
 </body>
 </html>

@@ -5,7 +5,7 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 
 body {
-    background-color: #5c87b2;
+    background-color: #F9ECA0;
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -103,7 +103,7 @@ header h1, #header h1 {
 
 #main {
     padding: 30px 30px 15px 30px;
-    background-color: #fff;
+    background-color: #fdf7d5;
     -webkit-border-radius: 4px 0 0 0;
     -moz-border-radius: 4px 0 0 0;
     border-radius: 4px 0 0 0;
@@ -111,7 +111,7 @@ header h1, #header h1 {
 
 footer, 
 #footer {
-    background-color: #fff;
+    background-color: #fdf7d5;
     color: #999;
     padding: 10px 0;
     text-align: center;
@@ -151,8 +151,8 @@ ul#menu li a {
     font-weight: bold;
     text-decoration: none;
     line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
+    background-color: #fdf7d5;
+    color: #246c20;
     -webkit-border-radius: 4px 4px 0 0;
     -moz-border-radius: 4px 4px 0 0;
     border-radius: 4px 4px 0 0;
@@ -216,20 +216,20 @@ input[type="submit"] {
 ----------------------------------------------------------*/
 
 table {
-    border: solid 1px #e8eef4;
+    border: solid 1px #90bc8e;
     border-collapse: collapse;
 }
 
 table td {
     padding: 5px;
-    border: solid 1px #e8eef4;
+    border: solid 1px #90bc8e;
 }
 
 table th {
     padding: 6px 5px;
     text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
+    background-color: #d0eacf;
+    border: solid 1px #90bc8e;
 }
 
 /* MISC  
@@ -258,21 +258,21 @@ div#title {
     display: block;
     text-align: right;
     margin: 10px;
-    color: White;
+    color: #44A43F;
 }
 
 #logindisplay a:link {
-    color: white;
+    color: #44A43F;
     text-decoration: underline;
 }
 
 #logindisplay a:visited {
-    color: white;
+    color: #44A43F;
     text-decoration: underline;
 }
 
 #logindisplay a:hover {
-    color: white;
+    color: #3CF532;
     text-decoration: none;
 }
 
